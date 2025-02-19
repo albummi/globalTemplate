@@ -45,6 +45,7 @@ async def async_setup(hass: HomeAssistant, config: dict):
         _LOGGER.error("Die Datei %s wurde nicht gefunden. Standardvorlage wird verwendet.", templates_file)
         templates = DEFAULT_TEMPLATES
 
+    # Speichere die Templates global in hass.data
     hass.data[DOMAIN] = templates["button_card_templates"]
     _LOGGER.info("Global Template Integration: Templates registriert: %s", hass.data[DOMAIN])
     return True
