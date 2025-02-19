@@ -2,6 +2,7 @@
   "domain": "global_template",
   "name": "Global Template",
   "version": "1.0.0",
+  "config_flow": true,
   "documentation": "https://github.com/albummi/globalTemplate",
   "dependencies": [],
   "codeowners": ["@albummi"],
