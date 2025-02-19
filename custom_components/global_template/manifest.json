@@ -1,13 +1,14 @@
 {
   "domain": "global_template",
   "name": "Global Template",
+  "version": "1.0.0",
   "documentation": "https://github.com/albummi/globalTemplate",
   "dependencies": [],
   "codeowners": ["@albummi"],
   "requirements": [],
-  "version": "1.0.1",
+  "iot_class": "cloud_polling",
   "hacs": {
-    "integration": true,
-    "category": "integration"
+    "category": "integration",
+    "version": "1.0.0"
   }
 }
