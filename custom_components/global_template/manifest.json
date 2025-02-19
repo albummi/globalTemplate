@@ -1,7 +1,6 @@
 {
   "domain": "global_template",
   "name": "Global Template",
-  "version": "1.0",
   "documentation": "https://github.com/albummi/global-template",
   "requirements": [],
   "dependencies": [],
