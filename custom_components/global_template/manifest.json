@@ -6,7 +6,6 @@
   "dependencies": [],
   "codeowners": ["@albummi"],
   "requirements": [],
-  "iot_class": "cloud_polling",
   "config_flow": true,
-  "homeassistant": "2023.3.0"
+  "iot_class": "cloud_polling"
 }
