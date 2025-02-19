@@ -6,5 +6,5 @@
   "requirements": [],
   "dependencies": [],
   "codeowners": ["@albummi"],
-  "config_flow": true  # Hiermit wird der Config Flow aktiviert
+  "config_flow": true
 }
