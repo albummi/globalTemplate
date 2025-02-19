@@ -1,9 +1,13 @@
 {
   "domain": "global_template",
   "name": "Global Template",
-  "documentation": "https://github.com/albummi/global-template",
-  "requirements": [],
+  "documentation": "https://github.com/albummi/globalTemplate",
   "dependencies": [],
   "codeowners": ["@albummi"],
-  "config_flow": true
+  "requirements": [],
+  "version": "1.0.0",
+  "hacs": {
+    "integration": true,
+    "category": "integration"
+  }
 }
