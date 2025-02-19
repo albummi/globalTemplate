@@ -6,7 +6,6 @@ from homeassistant.core import HomeAssistant
 _LOGGER = logging.getLogger(__name__)
 DOMAIN = "global_template"
 
-# Fallback: Standardvorlage, falls die Datei leer oder fehlerhaft ist.
 DEFAULT_TEMPLATES = {
     "button_card_templates": {
         "custom_button_template": {
@@ -31,8 +30,7 @@ DEFAULT_TEMPLATES = {
 async def async_setup(hass: HomeAssistant, config: dict):
     """Set up the Global Template integration."""
     templates_file = hass.config.path("custom_components", DOMAIN, "templates.yaml")
-    templates = None
-
+    
     if os.path.exists(templates_file):
         try:
             with open(templates_file, "r") as f:
