@@ -2,6 +2,7 @@ import logging
 import os
 import yaml
 from homeassistant.core import HomeAssistant
+from homeassistant.components.http import HomeAssistantView
 
 _LOGGER = logging.getLogger(__name__)
 DOMAIN = "global_template"
@@ -27,6 +28,17 @@ DEFAULT_TEMPLATES = {
     }
 }
 
+class GlobalTemplateView(HomeAssistantView):
+    """HTTP view to return global templates."""
+    url = "/api/global_template"
+    name = "api:global_template"
+    requires_auth = True
+
+    async def get(self, request):
+        hass = request.app["hass"]
+        templates = hass.data.get(DOMAIN, DEFAULT_TEMPLATES["button_card_templates"])
+        return self.json(templates)
+
 async def async_setup(hass: HomeAssistant, config: dict):
     """Set up the Global Template integration."""
     templates_file = hass.config.path("custom_components", DOMAIN, "templates.yaml")
@@ -36,16 +48,19 @@ async def async_setup(hass: HomeAssistant, config: dict):
             with open(templates_file, "r") as f:
                 templates = yaml.safe_load(f)
             if not templates or "button_card_templates" not in templates:
-                _LOGGER.warning("templates.yaml ist leer oder enthält keine 'button_card_templates'. Standardvorlage wird verwendet.")
+                _LOGGER.warning("templates.yaml is empty or missing 'button_card_templates'. Using default templates.")
                 templates = DEFAULT_TEMPLATES
         except Exception as e:
-            _LOGGER.error("Fehler beim Laden von templates.yaml: %s. Standardvorlage wird verwendet.", e)
+            _LOGGER.error("Error loading templates.yaml: %s. Using default templates.", e)
             templates = DEFAULT_TEMPLATES
     else:
-        _LOGGER.error("Die Datei %s wurde nicht gefunden. Standardvorlage wird verwendet.", templates_file)
+        _LOGGER.error("templates.yaml not found. Using default templates.")
         templates = DEFAULT_TEMPLATES
 
-    # Speichere die Templates global in hass.data
     hass.data[DOMAIN] = templates["button_card_templates"]
-    _LOGGER.info("Global Template Integration: Templates registriert: %s", hass.data[DOMAIN])
+    _LOGGER.info("Global Template Integration: Templates registered: %s", hass.data[DOMAIN])
+    
+    # Registriere den HTTP-Endpoint, damit das Frontend die Templates abrufen kann.
+    hass.http.register_view(GlobalTemplateView)
+    
     return True
