@@ -1,21 +1,30 @@
-"""Global Template integration for Home Assistant."""
-
 import logging
+import yaml
+import os
 
 from homeassistant.core import HomeAssistant
-from homeassistant.config_entries import ConfigEntry
-from homeassistant.helpers import discovery
-
-DOMAIN = "global_template"
+from homeassistant.helpers.typing import ConfigType
 
 _LOGGER = logging.getLogger(__name__)
 
-async def async_setup(hass: HomeAssistant, config: dict):
-    """Set up the global_template component."""
-    _LOGGER.info("Setting up Global Template integration")
-    return True
+DOMAIN = "global_template"
 
-async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
-    """Set up global_template from a config entry."""
-    _LOGGER.info("Setting up global_template from entry: %s", entry.entry_id)
+def load_templates(hass: HomeAssistant, config: ConfigType):
+    """Lade Templates aus der YAML-Datei."""
+    templates_file = hass.config.path(config[DOMAIN].get("templates_file", "templates.yaml"))
+
+    if os.path.exists(templates_file):
+        try:
+            with open(templates_file, "r") as f:
+                templates = yaml.safe_load(f)
+            hass.data[DOMAIN] = templates
+            _LOGGER.info("Templates erfolgreich geladen: %s", templates)
+        except Exception as e:
+            _LOGGER.error("Fehler beim Laden der Templates: %s", e)
+    else:
+        _LOGGER.error("Die Datei %s wurde nicht gefunden.", templates_file)
+
+async def async_setup(hass: HomeAssistant, config: ConfigType):
+    """Setup der Integration über configuration.yaml"""
+    load_templates(hass, config)
     return True
